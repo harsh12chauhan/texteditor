@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include<fstream>
+
 using namespace std;
 
 class Node{
@@ -14,7 +16,7 @@ class Node{
 };
 // show commands==================================================
 void showCommands(){
-    cout<<"********************************************"<<endl;
+    cout<<" ********************************************"<<endl;
     cout<<" * Enter 1 for help"<<endl;
     cout<<" * Enter 2 for insert the data at any line"<<endl;
     cout<<" * Enter 3 for updating the data"<<endl;
@@ -22,8 +24,9 @@ void showCommands(){
     cout<<" * Enter 5 for search a particuler data"<<endl;
     cout<<" * Enter 6 for deleting a particuler data"<<endl;
     cout<<" * Enter 7 for dispaly all the data"<<endl;
-    cout<<" * for exit press 9 "<<endl;
-    cout<<"********************************************"<<endl;
+    cout<<" * Enter 8 for saving the data permanently"<<endl;
+    cout<<" * for exit press q "<<endl;
+    cout<<" ********************************************"<<endl;
 }
 //insert data =====================================================
 // function to check wheather the given location exits or not =====
@@ -127,8 +130,30 @@ void displayData(Node*head){
     }
 }
 //undo operation=====================================================
+// *is to be implemented...
 //redo operation=====================================================
+// *is to be implemented...
+
 //save data in permanent storage=====================================================
+void saveData(Node*head){
+        Node*temp = head;
+        ofstream fileInput("texteditor.txt");
+        while(temp != NULL){
+            fileInput<<temp->data<<endl;
+            temp = temp->next;
+        }
+        fileInput.close();
+        cout<<"Your data has been saved successfully !!"<<endl;
+}
+void showfiledata(){
+    ifstream fileOutput("texteditor.txt");
+    string line;
+    while (fileOutput) {
+        getline(fileOutput, line);
+        cout << line << endl;
+    }
+    cout<<"========================================"<<endl;
+}
 
 int main(){
     Node*head = NULL;
@@ -195,6 +220,7 @@ int main(){
                         cin>>data;
                         //updating the data;
                         temp->data = data;
+                        cout<<"Data updated !!"<<endl;
                     }else{
                         cout<<"index does not exist !!"<<endl;
                     }
@@ -203,14 +229,14 @@ int main(){
             }
             case 4:{
                 string data;
-                cout<<"Enter Your Data to Append : ";
-                cin>>data;
-                // appendData(head,"data");
-                // appendData(head,"harsh");
-                // appendData(head,"yahajss");
-                // appendData(head,"dhcuhcata");
-                // appendData(head,"yash");
-                // appendData(head,"ajsiajie");
+                // cout<<"Enter Your Data to Append : ";
+                // cin>>data;
+                appendData(head,"data");
+                appendData(head,"harsh");
+                appendData(head,"yash");
+                appendData(head,"buddy");
+                appendData(head,"someone");
+                appendData(head,"everyone");
                 cout<<"Data Inserted !!"<<endl;
                 break;
             }
@@ -248,8 +274,22 @@ int main(){
                 displayData(head);
                 break;
             }
+            case 8:{
+                if(head == NULL){
+                    cout<<" List is Empty !, there is Nothing is to be saved."<<endl;
+                    break;
+                }else{
+                    saveData(head);
+                }
+                break;
+            }
+            case 11:{
+                    showfiledata();
+                    break;
+            }
             default:{
                 cout<<"INVALID COMMAND !!"<<endl;
+                break;
             }
         }
     }
