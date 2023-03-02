@@ -229,14 +229,9 @@ int main(){
             }
             case 4:{
                 string data;
-                // cout<<"Enter Your Data to Append : ";
-                // cin>>data;
-                appendData(head,"data");
-                appendData(head,"harsh");
-                appendData(head,"yash");
-                appendData(head,"buddy");
-                appendData(head,"someone");
-                appendData(head,"everyone");
+                cout<<"Enter Your Data to Append : ";
+                cin>>data;
+                appendData(head,data);
                 cout<<"Data Inserted !!"<<endl;
                 break;
             }
