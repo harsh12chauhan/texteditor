@@ -167,11 +167,15 @@ string readLine(){
     while(exit){
         string data;
         cin>>data;
-        if(data == "0"){
-            exit = 0;
+        if(data =="0" && ans == ""){
+            return "qlpo12311";
         }else{
-        ans += data;
-        ans+=" ";
+            if(data == "0"){
+                exit = 0;
+            }else{
+            ans += data;
+            ans+=" ";
+            }
         }
     }
     return ans;
@@ -205,6 +209,9 @@ int main(){
                 if(head == NULL){
                      cout<<"Enter your data to insert [PRESS '0' to EXIT] :";
                      data = readLine();
+                     if(data == "qlpo12311"){
+                        break;
+                     }
                     insertAtBegin(head,data);
                     cout<<"Data Inserted !!"<<endl;
                 }else{
@@ -213,11 +220,17 @@ int main(){
                     if(loc == 1){
                         cout<<"Enter your data to insert [PRESS '0' to EXIT] :";
                         data = readLine();
+                        if(data == "qlpo12311"){
+                        break;
+                         }
                         insertAtBegin(head,data);
                         cout<<"Data Inserted !!"<<endl;
                     }else if(locExists(head,loc)){                    
                         cout<<"Enter your data to insert [PRESS '0' to EXIT] :";
                         data = readLine();
+                        if(data == "qlpo12311"){
+                        break;
+                        }
                         insertAtLoc(head,data,loc);
                         cout<<"Data Inserted !!"<<endl;
                     }else{
@@ -242,12 +255,16 @@ int main(){
                         cout<<"Your Data is: "<<temp->data<<endl;
                         cout<<"Enter your updated Data [PRESS '0' to EXIT] : ";
                         data = readLine();
+                        if(data == "qlpo12311"){
+                        break;
+                        }
                         //updating the data;
                         temp->data = data;
                         cout<<"Data updated !!"<<endl;
                     }else{
                         cout<<"index does not exist !!"<<endl;
                     }
+                    break;
                 }
                 break;
             }
@@ -256,6 +273,9 @@ int main(){
                 string data;
                 cout<<"Enter Your Data to Append [PRESS '0' to EXIT] : ";
                 data = readLine();
+                if(data == "qlpo12311"){
+                    break;
+                }
                 appendData(head,data);
                 cout<<"Data Inserted !!"<<endl;
                 break;
