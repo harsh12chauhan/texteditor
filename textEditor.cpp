@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include<fstream>
-
 using namespace std;
 
 class Node{
@@ -25,7 +24,8 @@ void showCommands(){
     cout<<" * Enter 6 for deleting a particuler data"<<endl;
     cout<<" * Enter 7 for dispaly all the data"<<endl;
     cout<<" * Enter 8 for saving the data permanently"<<endl;
-    cout<<" * for exit press q "<<endl;
+    cout<<" * Enter 11 for seeing the data from file"<<endl;
+    cout<<" * for exit press 9 "<<endl;
     cout<<" ********************************************"<<endl;
 }
 //insert data =====================================================
@@ -88,15 +88,17 @@ Node*fetchData(Node* &head ,int loc){
     return temp;
 }
 //search data=====================================================
-bool searchData(Node*head,string value){
+int searchData(Node*head,string value){
     Node*temp = head;
+    int i =1;
     while(temp != NULL){
-        if(temp->data == value){
-            return true;
+        i++;
+        if(temp->data.find(value) != -1){
+            return i;
         }
         temp = temp->next;
     }
-    return false;
+    return 0;
 }
 //delete data=====================================================
 void deleteNodeAtLoc(Node* &head,int loc){
@@ -148,11 +150,31 @@ void saveData(Node*head){
 void showfiledata(){
     ifstream fileOutput("texteditor.txt");
     string line;
+    int i =0;
     while (fileOutput) {
+        i++;
         getline(fileOutput, line);
         cout << line << endl;
     }
-    cout<<"========================================"<<endl;
+    if(i == 0){
+        cout<<"No data is available in the file."<<endl;
+    }
+}
+// function to read a line ==============================================
+string readLine(){
+    string ans ="";
+    int exit =1;
+    while(exit){
+        string data;
+        cin>>data;
+        if(data == "0"){
+            exit = 0;
+        }else{
+        ans += data;
+        ans+=" ";
+        }
+    }
+    return ans;
 }
 
 int main(){
@@ -176,25 +198,26 @@ int main(){
                 showCommands();
                 break;
             }
+            // insertion            
             case 2:{
                 string data;
                 int loc;
                 if(head == NULL){
-                     cout<<"Enter your data to insert :";
-                     cin>>data;
+                     cout<<"Enter your data to insert [PRESS '0' to EXIT] :";
+                     data = readLine();
                     insertAtBegin(head,data);
                     cout<<"Data Inserted !!"<<endl;
                 }else{
                     cout<<"In which line you want to insert data: ";
                     cin>>loc;
                     if(loc == 1){
-                        cout<<"Enter your data to insert :";
-                        cin>>data;
+                        cout<<"Enter your data to insert [PRESS '0' to EXIT] :";
+                        data = readLine();
                         insertAtBegin(head,data);
                         cout<<"Data Inserted !!"<<endl;
                     }else if(locExists(head,loc)){                    
-                        cout<<"Enter your data to insert :";
-                        cin>>data;
+                        cout<<"Enter your data to insert [PRESS '0' to EXIT] :";
+                        data = readLine();
                         insertAtLoc(head,data,loc);
                         cout<<"Data Inserted !!"<<endl;
                     }else{
@@ -203,6 +226,7 @@ int main(){
                 }
                 break;
             }
+            //updation
             case 3:{
                 int loc;
                 if(head == NULL){
@@ -216,8 +240,8 @@ int main(){
                         // show the data
                         Node*temp = fetchData(head,loc);
                         cout<<"Your Data is: "<<temp->data<<endl;
-                        cout<<"Enter your updated Data: ";
-                        cin>>data;
+                        cout<<"Enter your updated Data [PRESS '0' to EXIT] : ";
+                        data = readLine();
                         //updating the data;
                         temp->data = data;
                         cout<<"Data updated !!"<<endl;
@@ -227,22 +251,24 @@ int main(){
                 }
                 break;
             }
+// append             
             case 4:{
                 string data;
-                cout<<"Enter Your Data to Append : ";
-                cin>>data;
+                cout<<"Enter Your Data to Append [PRESS '0' to EXIT] : ";
+                data = readLine();
                 appendData(head,data);
                 cout<<"Data Inserted !!"<<endl;
                 break;
             }
             case 5:{
                 string data;
-                cout<<"Enter Your Data to search : ";
+                cout<<"Enter Your Word to search : ";
                 cin>>data;
-                if(searchData(head,data)){
-                    cout<<"Data Found"<<endl;
-                }else{
+                int wordInLine = searchData(head,data);
+                if(wordInLine == 0){
                     cout<<"Data Not Found"<<endl;
+                }else{
+                    cout<<"Data Found in line "<<wordInLine<<endl;
                 }
                 break;
             }
