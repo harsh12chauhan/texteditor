@@ -25,7 +25,7 @@ void showCommands(){
     cout<<" * Enter 7 for dispaly all the data"<<endl;
     cout<<" * Enter 8 for saving the data permanently"<<endl;
     cout<<" * Enter 11 for seeing the data from file"<<endl;
-    cout<<" * for exit press 9 "<<endl;
+    cout<<" * Enter 9 for exit "<<endl;
     cout<<" ********************************************"<<endl;
 }
 //insert data =====================================================
@@ -90,7 +90,7 @@ Node*fetchData(Node* &head ,int loc){
 //search data=====================================================
 int searchData(Node*head,string value){
     Node*temp = head;
-    int i =1;
+    int i = 0;
     while(temp != NULL){
         i++;
         if(temp->data.find(value) != -1){
@@ -122,9 +122,11 @@ void deleteAtBeging(Node* &head){
 void displayData(Node*head){
     if(head == NULL){
         cout<<"No data is available !! "<<endl;
+        return;
     }
     int i = 1;
     Node*temp = head;
+    cout<<"--textEditor----------------"<<endl;
     while(temp != NULL){
         cout<<i<<".  "<<temp->data<<endl;
         temp = temp->next;
@@ -147,6 +149,7 @@ void saveData(Node*head){
         fileInput.close();
         cout<<"Your data has been saved successfully !!"<<endl;
 }
+// function which shows the data of the file ======
 void showfiledata(){
     ifstream fileOutput("texteditor.txt");
     string line;
@@ -168,7 +171,7 @@ string readLine(){
         string data;
         cin>>data;
         if(data =="0" && ans == ""){
-            return "qlpo12311";
+            return "qlpo12311";  // this is a random string, if there is no data  and input data is 0 then return "qlpo12311".
         }else{
             if(data == "0"){
                 exit = 0;
@@ -185,6 +188,8 @@ int main(){
     Node*head = NULL;
     int query;
     int check = 1;
+    int exit = 1;
+    cout<<"   ---------WELCOME TO TEXTEDITOR---------"<<endl;
     showCommands();
     while(exit){
         if(check){
@@ -209,35 +214,35 @@ int main(){
                 if(head == NULL){
                      cout<<"Enter your data to insert [PRESS '0' to EXIT] :";
                      data = readLine();
-                     if(data == "qlpo12311"){
-                        break;
+                     if(data != "qlpo12311"){
+                        insertAtBegin(head,data);
+                        cout<<"Data Inserted !!"<<endl;
                      }
-                    insertAtBegin(head,data);
-                    cout<<"Data Inserted !!"<<endl;
+                    // break;
                 }else{
                     cout<<"In which line you want to insert data: ";
                     cin>>loc;
                     if(loc == 1){
                         cout<<"Enter your data to insert [PRESS '0' to EXIT] :";
                         data = readLine();
-                        if(data == "qlpo12311"){
-                        break;
+                        if(data != "qlpo12311"){
+                            insertAtBegin(head,data);
+                            cout<<"Data Inserted !!"<<endl;
                          }
-                        insertAtBegin(head,data);
-                        cout<<"Data Inserted !!"<<endl;
+                        // break;
                     }else if(locExists(head,loc)){                    
                         cout<<"Enter your data to insert [PRESS '0' to EXIT] :";
                         data = readLine();
-                        if(data == "qlpo12311"){
-                        break;
+                        if(data != "qlpo12311"){
+                            insertAtLoc(head,data,loc);
+                            cout<<"Data Inserted !!"<<endl;
                         }
-                        insertAtLoc(head,data,loc);
-                        cout<<"Data Inserted !!"<<endl;
+                        // break;
                     }else{
                         cout<<"index does not exist !!"<<endl;
                     }
                 }
-                break;
+                break;  
             }
             //updation
             case 3:{
@@ -246,7 +251,7 @@ int main(){
                     cout<<" List is Empty !, there is Nothing is to be updated."<<endl;
                     break;
                 }else{
-                    cout<<"Enter the line number of which data you want ot update: ";
+                    cout<<"Enter the line number of which data you want to update: ";
                     cin>>loc;
                     if(locExists(head,loc)){
                         string data;
@@ -255,31 +260,30 @@ int main(){
                         cout<<"Your Data is: "<<temp->data<<endl;
                         cout<<"Enter your updated Data [PRESS '0' to EXIT] : ";
                         data = readLine();
-                        if(data == "qlpo12311"){
-                        break;
+                        if(data != "qlpo12311"){
+                            //updating the data;
+                            temp->data = data;
+                            cout<<"Data updated !!"<<endl;
                         }
-                        //updating the data;
-                        temp->data = data;
-                        cout<<"Data updated !!"<<endl;
+                        // break;
                     }else{
                         cout<<"index does not exist !!"<<endl;
                     }
-                    break;
                 }
                 break;
             }
-// append             
+            // append             
             case 4:{
                 string data;
                 cout<<"Enter Your Data to Append [PRESS '0' to EXIT] : ";
                 data = readLine();
-                if(data == "qlpo12311"){
-                    break;
+                if(data != "qlpo12311"){
+                    appendData(head,data);
+                    cout<<"Data Inserted !!"<<endl;
                 }
-                appendData(head,data);
-                cout<<"Data Inserted !!"<<endl;
                 break;
             }
+            // search
             case 5:{
                 string data;
                 cout<<"Enter Your Word to search : ";
@@ -292,6 +296,7 @@ int main(){
                 }
                 break;
             }
+            //deletion
             case 6:{
                 int loc;
                 if(head == NULL){
@@ -311,14 +316,15 @@ int main(){
                 }
                 break;
             }
+            // display 
             case 7:{
                 displayData(head);
                 break;
             }
+            //save the data in file
             case 8:{
                 if(head == NULL){
                     cout<<" List is Empty !, there is Nothing is to be saved."<<endl;
-                    break;
                 }else{
                     saveData(head);
                 }
