@@ -200,6 +200,7 @@ int main(){
         }
         cin>>query;
         if(query == 9){
+            exit = 0;
             break;
         }
         switch(query){
@@ -218,7 +219,6 @@ int main(){
                         insertAtBegin(head,data);
                         cout<<"Data Inserted !!"<<endl;
                      }
-                    // break;
                 }else{
                     cout<<"In which line you want to insert data: ";
                     cin>>loc;
@@ -229,7 +229,6 @@ int main(){
                             insertAtBegin(head,data);
                             cout<<"Data Inserted !!"<<endl;
                          }
-                        // break;
                     }else if(locExists(head,loc)){                    
                         cout<<"Enter your data to insert [PRESS '0' to EXIT] :";
                         data = readLine();
@@ -237,7 +236,6 @@ int main(){
                             insertAtLoc(head,data,loc);
                             cout<<"Data Inserted !!"<<endl;
                         }
-                        // break;
                     }else{
                         cout<<"index does not exist !!"<<endl;
                     }
@@ -265,7 +263,6 @@ int main(){
                             temp->data = data;
                             cout<<"Data updated !!"<<endl;
                         }
-                        // break;
                     }else{
                         cout<<"index does not exist !!"<<endl;
                     }
@@ -302,7 +299,7 @@ int main(){
                 if(head == NULL){
                     cout<<" List is Empty !, there is Nothing is to be Deleted."<<endl;
                 }else{
-                    cout<<"Of which line you want to Delete data: ";
+                    cout<<"Enter the line you want to Delete: ";
                     cin>>loc;
                     if(loc == 1){
                         deleteAtBeging(head);
@@ -336,6 +333,7 @@ int main(){
             }
             default:{
                 cout<<"INVALID COMMAND !!"<<endl;
+                exit = 0;
                 break;
             }
         }
