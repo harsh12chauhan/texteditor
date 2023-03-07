@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include<fstream>
+#include<stack>
 using namespace std;
 
 class Node{
@@ -13,6 +14,9 @@ class Node{
         next = NULL;
     }
 };
+// creating stack for undo operation ==============
+stack<string> undo;
+
 // show commands==================================================
 void showCommands(){
     cout<<" ********************************************"<<endl;
@@ -24,12 +28,21 @@ void showCommands(){
     cout<<" * Enter 6 for deleting a particuler data"<<endl;
     cout<<" * Enter 7 for dispaly all the data"<<endl;
     cout<<" * Enter 8 for saving the data permanently"<<endl;
-    cout<<" * Enter 11 for seeing the data from file"<<endl;
+    cout<<" * Enter 10 for undo"<<endl;
+    cout<<" * Enter 11 for redo"<<endl;
+    cout<<" * Enter 12 for seeing the data from file"<<endl;
     cout<<" * Enter 9 for exit "<<endl;
     cout<<" ********************************************"<<endl;
 }
+
+// function for pushing and converting data into string for stack operations....
+void pushIntoStack(int id,int loc,string data){
+    string value = to_string(id)+to_string(loc)+data;
+        undo.push(value);
+}
+
 //insert data =====================================================
-// function to check wheather the given location exits or not =====
+// function to check wheather the given location exits or not.....
 bool locExists(Node*head,int loc){
     Node*temp = head;
     int count = 1;
@@ -43,8 +56,8 @@ bool locExists(Node*head,int loc){
         return false;
     }
 }
-//insertion at given LOCATION ==========================
-void insertAtLoc(Node* &head,string val,int loc){
+//insertion at given LOCATION...............
+void insertAtLoc(Node* &head,string val,int loc,int condition){
     Node*n =  new Node(val);
     int i = 1;
     Node*temp = head;
@@ -54,14 +67,21 @@ void insertAtLoc(Node* &head,string val,int loc){
     }
     n->next = temp->next;
     temp->next = n;
+    if(condition == 1){
+    pushIntoStack(1,loc,val);
+    }
 }
-//insertion at Begining =====================
-void insertAtBegin(Node* &head,string val){
+//insertion at Begining...........
+void insertAtBegin(Node* &head,string val,int loc,int condition){
     Node*n = new Node(val);
     Node*temp = head;
     n->next = temp;
     head = n;
+    if(condition == 1){
+    pushIntoStack(1,loc,val);
+    }
 }
+
 //append data=====================================================
 void appendData(Node* &head,string val){
     Node*n = new Node(val);
@@ -77,6 +97,7 @@ void appendData(Node* &head,string val){
     temp->next = n;
     n->next = NULL;
 }
+
 //update data=====================================================
 Node*fetchData(Node* &head ,int loc){
     Node*temp = head;
@@ -87,6 +108,7 @@ Node*fetchData(Node* &head ,int loc){
     }
     return temp;
 }
+
 //search data=====================================================
 int searchData(Node*head,string value){
     Node*temp = head;
@@ -100,8 +122,9 @@ int searchData(Node*head,string value){
     }
     return 0;
 }
+
 //delete data=====================================================
-void deleteNodeAtLoc(Node* &head,int loc){
+void deleteNodeAtLoc(Node* &head,int loc,int condition){
     Node*temp = head;
     int i = 1;
     while (i < loc-1)
@@ -109,15 +132,23 @@ void deleteNodeAtLoc(Node* &head,int loc){
         temp =temp->next;
         i++;
     }
+    if(condition == 1){
+    pushIntoStack(0,loc,temp->next->data);
+    }
     Node*freeNodeMemory = temp->next;
     temp->next = temp->next->next;
     delete freeNodeMemory;
 }
-void deleteAtBeging(Node* &head){
+//deletion at beging...........
+void deleteAtBeging(Node* &head,int condition){
     Node*temp = head;
+    if(condition == 1){
+        pushIntoStack(0,1,temp->data);
+    }
     head = temp->next;
     delete temp;
 }
+
 //display data=====================================================
 void displayData(Node*head){
     if(head == NULL){
@@ -133,10 +164,6 @@ void displayData(Node*head){
         i++;
     }
 }
-//undo operation=====================================================
-// *is to be implemented...
-//redo operation=====================================================
-// *is to be implemented...
 
 //save data in permanent storage=====================================================
 void saveData(Node*head){
@@ -149,7 +176,8 @@ void saveData(Node*head){
         fileInput.close();
         cout<<"Your data has been saved successfully !!"<<endl;
 }
-// function which shows the data of the file ======
+
+// function which shows the data of the file ==============================
 void showfiledata(){
     ifstream fileOutput("texteditor.txt");
     string line;
@@ -163,6 +191,7 @@ void showfiledata(){
         cout<<"No data is available in the file."<<endl;
     }
 }
+
 // function to read a line ==============================================
 string readLine(){
     string ans ="";
@@ -183,6 +212,39 @@ string readLine(){
     }
     return ans;
 }
+
+//undo operation===============================================
+void undoOpertion(Node* &head,string s){
+    int id = (int(s[0])-'0');
+    int loc = 0;
+    string data;
+    for(int i = 1;i<s.size();){
+        if(s[i] >= '0' && s[i]<='9'){
+            loc = ((loc *10) + int(s[i]) - '0');
+            i++;
+        }else{
+            data += s[i];
+            i++;
+        }
+    }
+    if(id == 1){
+        if(loc == 1){
+            deleteAtBeging(head,0);
+        }else{
+            deleteNodeAtLoc(head,loc,0);
+        }
+    }else if(id == 0){
+        if(loc == 1 || loc == 0){
+            insertAtBegin(head,data,loc,0);
+        }else{
+            insertAtLoc(head,data,loc,0);
+        }
+    }else{
+        cout<<"some error occured !!"<<endl;
+    }
+}
+//redo operation=====================================================
+// *is to be implemented...
 
 int main(){
     Node*head = NULL;
@@ -216,14 +278,14 @@ int main(){
                      cout<<"Enter your data to insert [ENTER (.) to EXIT] :";
                      data = readLine();
                      if(data != "qlpo12311"){
-                        insertAtBegin(head,data);
+                         insertAtBegin(head,data,1,1);
                         cout<<"Data Inserted !!"<<endl;
                      }
                 }else if(head->next == NULL){
                      cout<<"Enter your data to insert [ENTER (.) to EXIT] :";
                      data = readLine();
                      if(data != "qlpo12311"){
-                        insertAtBegin(head->next,data);
+                        insertAtBegin(head->next,data,2,1);
                         cout<<"Data Inserted !!"<<endl;
                      }
                 }else{
@@ -233,14 +295,14 @@ int main(){
                         cout<<"Enter your data to insert [ENTER (.) to EXIT] :";
                         data = readLine();
                         if(data != "qlpo12311"){
-                            insertAtBegin(head,data);
+                            insertAtBegin(head,data,loc,1);
                             cout<<"Data Inserted !!"<<endl;
                          }
                     }else if(locExists(head,loc)){                    
                         cout<<"Enter your data to insert [ENTER (.) to EXIT] :";
                         data = readLine();
                         if(data != "qlpo12311"){
-                            insertAtLoc(head,data,loc);
+                            insertAtLoc(head,data,loc,1);
                             cout<<"Data Inserted !!"<<endl;
                         }
                     }else{
@@ -309,10 +371,10 @@ int main(){
                     cout<<"Enter the line you want to Delete: ";
                     cin>>loc;
                     if(loc == 1){
-                        deleteAtBeging(head);
+                        deleteAtBeging(head,1);
                         cout<<"Data Deleted !!"<<endl;
                     }else if(locExists(head,loc)){                    
-                        deleteNodeAtLoc(head,loc);
+                        deleteNodeAtLoc(head,loc,1);
                         cout<<"Data Deleted !!"<<endl;
                     }else{
                         cout<<"index does not exist !!"<<endl;
@@ -334,7 +396,22 @@ int main(){
                 }
                 break;
             }
+            case 10:{
+                if(undo.empty() == false){
+                string data = undo.top();
+                undo.pop();
+                undoOpertion(head,data);
+                cout<<"undo Done!"<<endl;
+                }else{
+                    cout<<"undo is empty !!"<<endl;
+                }
+                break;
+            }
             case 11:{
+                cout<<"Redo function still work in progress !!"<<endl;
+                break;
+            }
+            case 12:{
                     showfiledata();
                     break;
             }
