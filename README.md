@@ -15,7 +15,9 @@ open the file "textEdito.cpp" copy the code and past it in the online compiler a
 * Enter 6 for deleting a particuler data
 * Enter 7 for dispaly all the data
 * Enter 8 for saving the data permanently
-* Enter 11 for seeing the data from file
+* Enter 10 for undo
+* Enter 11 for redo
+* Enter 12 for seeing the data from file
 * Enter 9  for exit. 
 
 These are some query commands, with this command you can use this texteditor.
@@ -36,7 +38,11 @@ These are some query commands, with this command you can use this texteditor.
 <img width="272" alt="7 display" src="https://user-images.githubusercontent.com/77951325/222880388-ab4c025a-2b00-4d53-8a89-e50fd83c6352.png">
 <li>Enter 8 for saving the data permanently </li>
 <img width="256" alt="8 save" src="https://user-images.githubusercontent.com/77951325/222880379-99dd0573-6543-4ed5-8193-bad2b1b220b6.png">
-<li>Enter 11 for seeing the data from file </li>
+<li>Enter 10 for undo</li>
+<img width="448" alt="10 undo" src="https://user-images.githubusercontent.com/77951325/223412815-aff3abe4-61a6-4797-a62d-b898c8595f43.png">
+<li>Enter 11 for redo</li>
+<img width="454" alt="11 redo" src="https://user-images.githubusercontent.com/77951325/223414460-5efe6a74-125c-4389-9d47-854686654531.png">
+<li>Enter 12 for seeing the data from file </li>
 <img width="262" alt="11 openfile" src="https://user-images.githubusercontent.com/77951325/222880380-cd6e97a0-0a07-42c6-a44d-28f7e4893035.png">
 <li>text file:</li>
 <img width="352" alt="textfile" src="https://user-images.githubusercontent.com/77951325/222880382-0d4174f0-002c-42c7-bb4e-47ddfb9efb00.png">
