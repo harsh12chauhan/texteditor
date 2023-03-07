@@ -16,6 +16,7 @@ class Node{
 };
 // creating stack for undo operation ==============
 stack<string> undo;
+stack<string> redo;
 
 // show commands==================================================
 void showCommands(){
@@ -213,8 +214,8 @@ string readLine(){
     return ans;
 }
 
-//undo operation===============================================
-void undoOpertion(Node* &head,string s){
+//undo and redo operation===============================================
+void undoAndRedoOpertion(Node* &head,string s,char opCheck){
     int id = (int(s[0])-'0');
     int loc = 0;
     string data;
@@ -227,13 +228,18 @@ void undoOpertion(Node* &head,string s){
             i++;
         }
     }
-    if(id == 1){
+    int v1=1,v2=0;
+    if(opCheck == 'r'){
+        v1 = 0;
+        v2 = 1;
+    }
+    if(id == v1){
         if(loc == 1){
             deleteAtBeging(head,0);
         }else{
             deleteNodeAtLoc(head,loc,0);
         }
-    }else if(id == 0){
+    }else if(id == v2){
         if(loc == 1 || loc == 0){
             insertAtBegin(head,data,loc,0);
         }else{
@@ -243,8 +249,6 @@ void undoOpertion(Node* &head,string s){
         cout<<"some error occured !!"<<endl;
     }
 }
-//redo operation=====================================================
-// *is to be implemented...
 
 int main(){
     Node*head = NULL;
@@ -400,15 +404,24 @@ int main(){
                 if(undo.empty() == false){
                 string data = undo.top();
                 undo.pop();
-                undoOpertion(head,data);
-                cout<<"undo Done!"<<endl;
+                redo.push(data);
+                undoAndRedoOpertion(head,data,'u');
+                cout<<"Undo Done!"<<endl;
                 }else{
                     cout<<"undo is empty !!"<<endl;
                 }
                 break;
             }
             case 11:{
-                cout<<"Redo function still work in progress !!"<<endl;
+                if(redo.empty() == false){
+                    string data = redo.top();
+                    redo.pop();
+                    undo.push(data);
+                    undoAndRedoOpertion(head,data,'r');
+                cout<<"Redo Done!"<<endl;
+                }else{
+                    cout<<"redo is empty !!"<<endl;
+                }
                 break;
             }
             case 12:{
