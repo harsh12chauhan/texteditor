@@ -4,8 +4,11 @@ This is Console User Interface (CUI) project in C++. It is a simple text editor 
 # setup
 To open in Local System:
 Clone the repository into your local system.Then open the folder where this file is saved.Open comand prompt and run command: "g++ .\textEditor.cpp", now run command: ".\a.exe".
+<div></div>
 To Open in online Compiler:
 open the file "textEdito.cpp" copy the code and past it in the online compiler and run.
+
+
 # How to use
 * Enter 1 for help
 * Enter 2 for insert the data at any line
